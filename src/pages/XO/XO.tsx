@@ -5,6 +5,7 @@ import * as eventNames from "../../eventNames";
 import { useParams } from "react-router";
 import CenteredContent from "../../templates/CenteredContent/CenteredContent";
 import Button from "react-bootstrap/esm/Button";
+import ButtonGroup from "react-bootstrap/esm/ButtonGroup";
 
 const Slot = ({
   slot,
@@ -48,11 +49,17 @@ const XO = () => {
       setRoomState(data);
     });
 
+    socket?.on(eventNames.PLAYER_RESETED_ROOM_EVENT, (data) => {
+      console.log(eventNames.PLAYER_RESETED_ROOM_EVENT, data);
+      setRoomState(data);
+    });
+
     return () => {
       socket?.off(eventNames.BOARD_CHANGED_EVENT);
       socket?.off(eventNames.PLAYER_JOINED_ROOM_EVENT);
       socket?.off(eventNames.PLAYER_LEFT_ROOM_EVENT);
       socket?.off(eventNames.PLAYER_STARTED_ROOM_EVENT);
+      socket?.off(eventNames.PLAYER_RESETED_ROOM_EVENT);
     };
   }, [socket]);
 
@@ -75,17 +82,32 @@ const XO = () => {
     });
   };
 
+  const handleResetClick = () => {
+    socket?.emit(eventNames.PLAYER_RESET_ROOM_EVENT, {
+      room: params.roomID,
+    });
+  };
+
   return (
     <CenteredContent>
       <div className="XO">
         <h1>XO</h1>
-        <Button
-          type="primary"
-          disabled={roomState?.status !== "ready"}
-          onClick={handleStartClick}
-        >
-          Start
-        </Button>
+        <ButtonGroup size="lg">
+          <Button
+            type="primary"
+            disabled={roomState?.status !== "ready"}
+            onClick={handleStartClick}
+          >
+            Start
+          </Button>
+          <Button
+            type="success"
+            disabled={roomState?.status !== "done"}
+            onClick={handleResetClick}
+          >
+            Reset
+          </Button>
+        </ButtonGroup>
         <div className="slots_container">
           <div className="slots_row">
             <Slot
