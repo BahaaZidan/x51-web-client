@@ -1,6 +1,11 @@
 import React from "react";
 import { Socket } from "socket.io-client";
 
-const SocketContext = React.createContext<Socket | null>(null);
+type KnownSockets = {
+  mainSocket: Socket;
+  xoSocket: Socket;
+};
+
+const SocketContext = React.createContext<KnownSockets | null>(null);
 
 export default SocketContext;

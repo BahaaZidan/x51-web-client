@@ -1,17 +1,21 @@
+import "./index.css";
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
+import { io } from "socket.io-client";
+import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import SocketContext from "./contexts/Socket";
-import { io } from "socket.io-client";
 
-const socket = io("http://localhost:3002/");
+const mainSocket = io("http://localhost:3002/");
+const xoSocket = io("http://localhost:3002/xo");
 
 ReactDOM.render(
   <React.StrictMode>
-    <SocketContext.Provider value={socket}>
-      <App />
+    <SocketContext.Provider value={{ mainSocket, xoSocket }}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </SocketContext.Provider>
   </React.StrictMode>,
   document.getElementById("root")
