@@ -29,37 +29,13 @@ const XO = () => {
   const socket = sockets?.xoSocket;
 
   useEffect(() => {
-    socket?.on(eventNames.BOARD_CHANGED_EVENT, (data) => {
-      console.log(eventNames.BOARD_CHANGED_EVENT, data);
-      setRoomState(data);
-    });
-
-    socket?.on(eventNames.PLAYER_JOINED_ROOM_EVENT, (data) => {
-      console.log(eventNames.PLAYER_JOINED_ROOM_EVENT, data);
-      setRoomState(data);
-    });
-
-    socket?.on(eventNames.PLAYER_LEFT_ROOM_EVENT, (data) => {
-      console.log(eventNames.PLAYER_LEFT_ROOM_EVENT, data);
-      setRoomState(data);
-    });
-
-    socket?.on(eventNames.PLAYER_STARTED_ROOM_EVENT, (data) => {
-      console.log(eventNames.PLAYER_STARTED_ROOM_EVENT, data);
-      setRoomState(data);
-    });
-
-    socket?.on(eventNames.PLAYER_RESETED_ROOM_EVENT, (data) => {
-      console.log(eventNames.PLAYER_RESETED_ROOM_EVENT, data);
+    socket?.on(eventNames.GAME_STATE_CHANGED, (data) => {
+      console.log(eventNames.GAME_STATE_CHANGED, data);
       setRoomState(data);
     });
 
     return () => {
-      socket?.off(eventNames.BOARD_CHANGED_EVENT);
-      socket?.off(eventNames.PLAYER_JOINED_ROOM_EVENT);
-      socket?.off(eventNames.PLAYER_LEFT_ROOM_EVENT);
-      socket?.off(eventNames.PLAYER_STARTED_ROOM_EVENT);
-      socket?.off(eventNames.PLAYER_RESETED_ROOM_EVENT);
+      socket?.off(eventNames.GAME_STATE_CHANGED);
     };
   }, [socket]);
 
